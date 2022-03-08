@@ -1,5 +1,12 @@
 # watchdog_mqtt_telegram
-simple python watchdog to watch mqtt que and send alerts to telegram
+simple python watchdog to watch MQTT que and send alerts to Telegram
+
+The goal is to have simple script for monitoring of other devices (like IoT sensors sending readings over MQTT). If run on 2 different machines, can monitor if one of them is down.
+
+This simple script connects to MQTT broker, subscribes to chosen topic and periodically checks if new message is received. If for more than 3 checks there is no new message, sends alert to Telegram chat. Additionally sends MQTT message periodically (as a heartbeat, indicating that script is alive).
+
+Written in Python 3 using 2 libraries (see requirements [below](#requirements)). 
+Container based on Python3-alpine image to have smaller image (built image of python:3.10-alpine is ~70MB, compared to ~900MB of standard python:3.10 and ~135MB of python:3.10-slim)
 
 ### usage
 simplest way is to use it as docker container
@@ -20,6 +27,8 @@ It is possible to run multiple watchdog, below second watchdog to watch the one 
 ```
 docker run --name watchdogB -e WATCHDOG_NAME=watchdogB -e WATCH_QUE=watchdog/watchdogA -e HEARTBEAT_QUE=watchdog/watchdogB -d --restart on-failure:5 -e MQTT_ADDR="mqtt.eclipseprojects.io" -e TELEGRAM_TOKEN="...paste_your_token..." -e TELEGRAM_CHAT_ID="...paste_chat_id..." watchdog
 ```
+and now you have 2 watchdogs watching each other (doesn't make much sens, but you can run it on different machines and get alert whenever one is down)
+
 
 ### configuration
 watchdog uses configuration in environment variables:
@@ -44,6 +53,8 @@ LOGGING_LEVEL=20  # logging.INFO
 ```
 
 ### requirements
-used libraries:
+Python 3
+
+libraries used:
 - [paho mqtt python client](https://www.eclipse.org/paho/index.php?page=clients/python/index.php)
 - [python telegram bot](https://github.com/python-telegram-bot/python-telegram-bot)
