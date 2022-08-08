@@ -4,7 +4,7 @@ simple python watchdog to watch MQTT que and send alerts to Telegram
 
 The goal is to have simple script for monitoring of other devices (like IoT sensors sending readings over MQTT). If run on 2 different machines, can monitor if one of them is down.
 
-This simple script connects to MQTT broker, subscribes to chosen topic and periodically checks if new message is received. If for more than 3 checks there is no new message, sends alert to Telegram chat. Additionally sends MQTT message periodically (as a heartbeat, indicating that script is alive).
+This simple script connects to MQTT broker, subscribes to chosen topics (can subsribe to multiple topics) and periodically checks if new message is received. If for more than 3 checks there is no new message, sends alert to Telegram chat. Additionally sends MQTT message periodically (as a heartbeat, indicating that script is alive).
 
 Written in Python 3 using 2 libraries (see requirements [below](#requirements)).
 Container based on Python3-alpine image to have smaller image (built image of python:3.10-alpine is ~70MB, compared to ~900MB of standard python:3.10 and ~135MB of python:3.10-slim)
@@ -38,10 +38,10 @@ docker run --name watchdogA -d --restart on-failure:5 -e MQTT_ADDR="mqtt.eclipse
 It is possible to run multiple watchdog, below second watchdog to watch the one above:
 
 ```bash
-docker run --name watchdogB -e WATCHDOG_NAME=watchdogB -e WATCH_QUE=watchdog/watchdogA -e HEARTBEAT_QUE=watchdog/watchdogB -d --restart on-failure:5 -e MQTT_ADDR="mqtt.eclipseprojects.io" -e TELEGRAM_TOKEN="...paste_your_token..." -e TELEGRAM_CHAT_ID="...paste_chat_id..." watchdog
+docker run --name watchdogB -d --restart on-failure:5 -e WATCHDOG_NAME=watchdogB -e WATCH_QUES=watchdog/watchdogA -e HEARTBEAT_QUE=watchdog/watchdogB -e MQTT_ADDR="mqtt.eclipseprojects.io" -e TELEGRAM_TOKEN="...paste_your_token..." -e TELEGRAM_CHAT_ID="...paste_chat_id..." watchdog
 ```
 
-and now you have 2 watchdogs watching each other (doesn't make much sens, but you can run it on different machines and get alert whenever one is down)
+and now you have 2 watchdogs watching each other (doesn't make much sense on a single machine, but you can run it on different machines and get an alert whenever one is down)
 
 ### configuration
 
@@ -62,12 +62,12 @@ TELEGRAM_CHAT_ID
 - **optional** (defaults to values below):
 
 ```text
-WATCHDOG_NAME="watchdogA"    # MQTT client id, should be unique on mqtt server (otherwise causes disconnections)
+WATCHDOG_NAME="watchdogA"        # MQTT client id, should be unique on mqtt server (otherwise causes disconnections)
 MQTT_ADDR_PORT=1883
-WATCH_QUE=watchdog/watchdogB    # MQTT que to watch for incomming messages
-HEARTBEAT_QUE=watchdog/watchdogA    # MQTT que to send periodical messages indicating that script is alive
-WATCH_INTERVAL=5*60   # message on WATCH_QUE expected every WATCH_INTERVAL seconds
-LOGGING_LEVEL=20  # logging.INFO, change to 10 (logging.DEBUG) for debugging
+WATCH_QUES=watchdog/watchdogB    # MQTT ques to watch for incomming messages, for multiple ques separate with semicolon (';')
+HEARTBEAT_QUE=watchdog/watchdogA # MQTT que to send periodical messages indicating that script is alive
+WATCH_INTERVAL=5*60              # message on WATCH_QUES expected every WATCH_INTERVAL seconds
+LOGGING_LEVEL=20                 # logging.INFO, change to 10 (logging.DEBUG) for debugging
 ```
 
 ### requirements
