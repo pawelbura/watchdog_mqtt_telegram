@@ -123,7 +123,7 @@ def main():
     global watched
     watched = WatchQues(WATCH_QUES)
     
-    client = mqtt.Client(WATCHDOG_NAME, userdata=watch)  # WATCH_QUES przesyłane do klienta w userdata, żeby później użyć w on_connecdt
+    client = mqtt.Client(WATCHDOG_NAME, userdata=watched)  # WATCH_QUES przesyłane do klienta w userdata, żeby później użyć w on_connecdt
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_message = on_message
