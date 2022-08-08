@@ -121,7 +121,7 @@ def main():
     
     # globalna zmienna w ktorej trzymane sa kolejki do obserwowania z czasem ostatniej wiadomosci
     global watched
-    watch = WatchQues(WATCH_QUES)
+    watched = WatchQues(WATCH_QUES)
     
     client = mqtt.Client(WATCHDOG_NAME, userdata=watch)  # WATCH_QUES przesyłane do klienta w userdata, żeby później użyć w on_connecdt
     client.on_connect = on_connect
