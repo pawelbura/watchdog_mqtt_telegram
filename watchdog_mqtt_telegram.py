@@ -106,7 +106,7 @@ def main():
 
     MQTT_ADDR_PORT = int(os.environ.get("MQTT_ADDR_PORT", 1883))
     # monitoruje wiele kolejek, zmienna środowiskowa to lista rozdizelana średnikeim
-    WATCH_QUES = os.environ.get("WATCH_QUE", "watchdog/watchdogB").split(';')
+    WATCH_QUES = os.environ.get("WATCH_QUES", "watchdog/watchdogB").split(';')
     # TODO: dodać sprawdzenie/usuniecie początkowych i końcowych ";", żeby nie było pustych kolejek
     HEARTBEAT_QUE = os.environ.get("HEARTBEAT_QUE", "watchdog/watchdogA")
     WATCH_INTERVAL = int(os.environ.get("WATCH_INTERVAL", 5*60))  # co ile sekund powinna przyjść wiadomosć
