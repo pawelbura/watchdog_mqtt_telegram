@@ -49,7 +49,7 @@ watchdog uses configuration in environment variables:
 
 - **obligatory:**
 
-address of mqtt server - you can use a public one ([read this]([http://mqtt.eclipseprojects.io/)), or run one on your own ([read this](https://github.com/eclipse/mosquitto))
+address of mqtt server - you can use a public one ([read this](http://mqtt.eclipseprojects.io/)), or run one on your own ([read this](https://github.com/eclipse/mosquitto))
 
 token and chat_id of telegram (how to get them - [read this](https://core.telegram.org/bots))
 
