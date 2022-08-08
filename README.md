@@ -38,7 +38,7 @@ docker run --name watchdogA -d --restart on-failure:5 -e MQTT_ADDR="mqtt.eclipse
 It is possible to run multiple watchdog, below second watchdog to watch the one above:
 
 ```bash
-docker run --name watchdogB -d --restart on-failure:5 -e WATCHDOG_NAME=watchdogB -e WATCH_QUES=watchdog/watchdogA -e HEARTBEAT_QUE=watchdog/watchdogB -e MQTT_ADDR="mqtt.eclipseprojects.io" -e TELEGRAM_TOKEN="...paste_your_token..." -e TELEGRAM_CHAT_ID="...paste_chat_id..." watchdog
+docker run --name watchdogB -d --restart on-failure:5 -e WATCHDOG_NAME="watchdogB" -e WATCH_QUES="watchdog/watchdogA" -e HEARTBEAT_QUE="watchdog/watchdogB" -e MQTT_ADDR="mqtt.eclipseprojects.io" -e TELEGRAM_TOKEN="...paste_your_token..." -e TELEGRAM_CHAT_ID="...paste_chat_id..." watchdog
 ```
 
 and now you have 2 watchdogs watching each other (doesn't make much sense on a single machine, but you can run it on different machines and get an alert whenever one is down)
